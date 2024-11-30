@@ -114,13 +114,15 @@ void paint_borders(int add_border_px, int width, int height, png_bytep **row_ptr
     int max_y = paint_offset_y + paint_height;
 
     for (int y = paint_offset_y; y < max_y; y++) {
-        png_bytep row = (*row_ptrs)[y];
-        for (int x = paint_offset_x; x < max_x; x++) {
-            png_bytep px = &(row[x * 4]);
-            if (x < width && y < height) {
-                if (y == paint_offset_y || y == max_y - 1 || x == paint_offset_x || x == max_x - 1) {
-                    px[0] = 0xFF;
-                    px[1] = px[2] = 0;
+        if (y >= 0 && y < height) {
+            png_bytep row = (*row_ptrs)[y];
+            for (int x = paint_offset_x; x < max_x; x++) {
+                if (x >= 0 && x < width) {
+                    png_bytep px = &(row[x * 4]);
+                    if (y == paint_offset_y || y == max_y - 1 || x == paint_offset_x || x == max_x - 1) {
+                        px[0] = 0xFF;
+                        px[1] = px[2] = 0;
+                    }
                 }
             }
         }
